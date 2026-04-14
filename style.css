@@ -1,0 +1,109 @@
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url('sakiko-togawa-togawa-sakiko.gif') center/cover no-repeat;
+    filter: blur(8px);
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: -1;
+}
+
+#musicBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    padding: 10px 13px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 999;
+}
+
+#songName {
+    position: fixed;
+    top: 65px;
+    right: 20px;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px;
+}
+
+.card {
+    background: #1a1a1a;
+    border-radius: 20px;
+    padding: 25px;
+    width: 350px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #2a2a2a;
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 10px;
+    border: none;
+    background: white;
+    color: black;
+}
+
+.result {
+    margin-top: 20px;
+    text-align: center;
+    background: #2a2a2a;
+}
+
+.profile img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: block;
+    margin: auto;
+    cursor: pointer;
+    animation: float 3s infinite;
+}
+
+@keyframes float {
+    50% { transform: translateY(-8px); }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+}

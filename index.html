@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persona Finder</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Background */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url('sakiko-togawa-togawa-sakiko.gif') center/cover no-repeat;
+    filter: blur(8px);
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: -1;
+}
+
+/* MUSIC CONTROL */
+#musicBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    padding: 10px 13px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 999;
+    backdrop-filter: blur(5px);
+}
+
+#musicBtn:hover {
+    transform: scale(1.1);
+}
+
+#songName {
+    position: fixed;
+    top: 65px;
+    right: 20px;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* Container */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px;
+}
+
+.card {
+    background: #1a1a1a;
+    border-radius: 20px;
+    padding: 25px;
+    width: 350px;
+    box-shadow: 0 10px 30px rgba(255,255,255,0.05);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #2a2a2a;
+    color: white;
+}
+
+input:focus, select:focus {
+    outline: 1px solid white;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 10px;
+    border: none;
+    background: white;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ccc;
+}
+
+.result {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 10px;
+    background: #2a2a2a;
+}
+
+/* Profile */
+.profile img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: block;
+    margin: auto;
+    border: 3px solid white;
+    object-fit: cover;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.profile img:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(255,255,255,0.6);
+}
+
+.profile h3 {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.profile img {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+
+.links a {
+    display: block;
+    text-decoration: none;
+    background: white;
+    color: black;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.links a:hover {
+    background: #ddd;
+}
+
+.glow {
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 15px;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 30px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<div id="musicBtn" onclick="toggleMusic()">🔇</div>
+<div id="songName">♪ Belum diputar</div>
+
+<audio id="bgm" loop>
+    <source src="Wonder - Tayori.mp3" type="audio/mp3">
+</audio>
+
+<div class="container">
+
+<!-- Finder -->
+<div class="card">
+    <h2>Persona Finder</h2>
+
+    <input type="text" id="nama" placeholder="Nama">
+    
+    <select id="hobi">
+        <option value="">Pilih Hobi</option>
+        <option value="teknologi">Teknologi</option>
+        <option value="seni">Seni</option>
+        <option value="game">Game</option>
+        <option value="musik">Musik</option>
+    </select>
+
+    <input type="number" id="angka" min="1" max="10" placeholder="Angka keberuntungan (1-10)">
+
+    <button onclick="randomAngka()"> Random</button>
+    <button onclick="generatePersona()">Generate Persona</button>
+
+    <div class="result" id="hasil">Hasil akan muncul di sini...</div>
+</div>
+
+<!-- Profile -->
+<div class="card profile">
+    <img src="togawa-sakiko-mygo.gif" onclick="openModal(this.src)">
+    <h3>Yudhistira Rizky Ramadhan</h3>
+
+    <div class="links">
+        <a href="https://github.com/" target="_blank">GitHub</a>
+        <a href="https://www.tiktok.com/" target="_blank">TikTok</a>
+        <a href="https://www.instagram.com/" target="_blank">Instagram</a>
+        <a href="https://www.youtube.com/" target="_blank">YouTube</a>
+    </div>
+</div>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+    <span class="close" onclick="closeModal()">✖</span>
+    <img id="modalImg">
+</div>
+
+<script>
+let isPlaying = false;
+
+function toggleMusic() {
+    const music = document.getElementById("bgm");
+    const btn = document.getElementById("musicBtn");
+    const song = document.getElementById("songName");
+
+    if (isPlaying) {
+        music.pause();
+        btn.innerHTML = "🔇";
+        song.innerHTML = "♪ Musik dihentikan";
+    } else {
+        music.play();
+        btn.innerHTML = "🔊";
+        song.innerHTML = "♪ Now Playing: Wonder - Tayori.mp3";
+    }
+
+    isPlaying = !isPlaying;
+}
+
+function randomAngka() {
+    document.getElementById("angka").value = Math.floor(Math.random() * 10) + 1;
+}
+
+function generatePersona() {
+    let nama = document.getElementById("nama").value;
+    let hobi = document.getElementById("hobi").value;
+    let angka = parseInt(document.getElementById("angka").value);
+
+    if (!nama || !hobi || !angka) {
+        document.getElementById("hasil").innerHTML = "Isi dulu semuanya ya!";
+        return;
+    }
+
+    const personaList = {
+        teknologi: [
+            " The AI Explorer"," The Code Mastermind"," The Debugging Ninja"," The Cyber Phantom"," The System Builder",
+            " The Startup Hacker"," The Security Guardian"," The Network Wizard"," The Future Architect"," The Digital Overlord"
+        ],
+        seni: [
+            " The Abstract Thinker"," The Dreamy Artist"," The Canvas Magician"," The Story Crafter"," The Expressionist",
+            " The Vision Creator"," The Imagination Builder"," The Scene Director"," The Aesthetic Soul"," The Free Spirit Artist"
+        ],
+        game: [
+            " The Casual Player"," The Arcade Master"," The RPG Adventurer"," The Sharpshooter"," The Ranked Grinder",
+            " The Clutch God"," The Strategy Genius"," The Stealth Gamer"," The Speed Runner"," The Open World Explorer"
+        ],
+        musik: [
+            " The Calm Composer"," The Beat Listener"," The Shower Singer"," The Indie Player"," The Rhythm Keeper",
+            " The Piano Soul"," The Melody Maker"," The Rising Star"," The Rockstar"," The Sound Dreamer"
+        ]
+    };
+
+    let persona = personaList[hobi][angka - 1];
+
+    let hasilBox = document.getElementById("hasil");
+    hasilBox.innerHTML = `${nama}, persona kamu:<br><b>${persona}</b>`;
+    hasilBox.classList.add("glow");
+}
+
+function openModal(src) {
+    document.getElementById("modal").style.display = "flex";
+    document.getElementById("modalImg").src = src;
+}
+
+function closeModal() {
+    document.getElementById("modal").style.display = "none";
+}
+</script>
+
+</body>
+</html>
